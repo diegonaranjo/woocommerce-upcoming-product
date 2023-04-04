@@ -4,7 +4,7 @@ Plugin Name: Woocommerce upcoming Products
 Plugin URI: https://github.com/Sk-Shaikat/woocommerce-upcoming-product
 Description: Best Plugin to Manage your upcoming product easily in WooCommerce.
 Tested up to Woocommerce: 7.5.1
-Version: 1.5.9.3
+Version: 1.5.9.4
 Author: Mohaiminul Islam
 Author URI: http://www.mohaiminulislam.com
 Text Domain: wup
@@ -18,8 +18,9 @@ License: GPL2
  */
 
 // don't call the file directly
-if ( !defined( 'ABSPATH' ) ) exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Woocommerce_Upcoming_Product ctarlass
  *
@@ -566,7 +567,6 @@ function wup_shop_page_view() {
         }
     }
 }
-// Digitar
 /**
  * Add upcoming setting on edit product page
  *
@@ -653,8 +653,6 @@ $catalog_orderby['upcoming'] = WC_Admin_Settings::get_option( 'wup_sort_by_text'
 return $catalog_orderby;
 }
 
-// end Digitar
-
 /**
  * DUpdate search queary
  *
@@ -699,36 +697,35 @@ function wup_upcoming_single_page_view() {
     global $post;
     if ( $this->is_upcoming() ) {
         if ( WC_Admin_Settings::get_option( 'wup_show_available_date', 'yes' ) === 'yes' ) {
-            // Digitar
-            $_available_on = get_post_meta( $post->ID, '_available_on', true ); ?>
-            <div class="product_meta">
-                <span class="available-from">
-                    <strong>
-                        <?php
-                        $available_date = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' );
-                        if ( !empty( $available_date ) ) {
-                            $available_date_text = $available_date . ': ';
-                            echo $available_date_text;
-                        }
-                        if ( empty( $_available_on ) ) {
-                            $not_available_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not yet set' );
-                            echo $not_available_date_text;
-                        }else {
-                            if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
-                                echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );
-                            } else if ( 'duration' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
-                                echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
-                            }
-                        }
-                        ?>
-                    </strong>
-                </span>
-            </div>
-            <?php
+            $_available_on = get_post_meta( $post->ID, '_available_on', true ); 
+            $available_text_style = 'color: ' . WC_Admin_Settings::get_option( 'wup_available_text_color', '#000000' ) . '; 
+            font-size: ' . WC_Admin_Settings::get_option( 'wup_available_from_font_size', '12px' ) .'; 
+            font-weight: ' . WC_Admin_Settings::get_option( 'wup_available_from_font_weight', 'bold' ) .  '; 
+            text-transform: ' . WC_Admin_Settings::get_option( 'wup_available_text_transform', 'none' ) . ';';
+            echo '<div class="product_meta">';
+            echo '<span class="available-from" style="' . esc_attr( $available_text_style ) . '">';
+            echo '<strong>';
+            $available_date = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' );
+            if ( !empty( $available_date ) ) {
+                $available_date_text = $available_date . ': ';
+                echo $available_date_text;
+            }
+            if ( empty( $_available_on ) ) {
+                $not_available_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not yet set' );
+                echo $not_available_date_text;
+            }else {
+                if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
+                    echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );
+                } else if ( 'duration' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
+                    echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
+                }
+            }
+            echo '</strong>';
+            echo '</span>';
+            echo '</div>';
         }
     }
 }
-
 
 /**
  * Shop page view for upcoming product
@@ -739,30 +736,39 @@ function wup_upcoming_single_page_view() {
  */
 function wup_upcoming_shop_page_view() {
     global $post;
-    if ( $this->is_upcoming() && WC_Admin_Settings::get_option( 'wup_show_available_date', 'yes' ) == 'yes' ) {
-        // Digitar
-        $_available_on = get_post_meta( $post->ID, '_available_on', true ); 
-        if ( ! empty( $_available_on ) ) {
+    if ( $this->is_upcoming() ) {
+        if ( WC_Admin_Settings::get_option( 'wup_show_available_date', 'yes' ) === 'yes' ) {
+            $_available_on = get_post_meta( $post->ID, '_available_on', true ); 
+            $available_text_style = 'color: ' . WC_Admin_Settings::get_option( 'wup_available_text_color', '#000000' ) . '; 
+            text-transform: ' . WC_Admin_Settings::get_option( 'wup_available_text_transform', 'none' ) . ';
+            text-align: ' . WC_Admin_Settings::get_option( 'wup_available_from_text_align', 'center' ) . ';
+            font-size: ' . WC_Admin_Settings::get_option( 'wup_available_from_font_size', '12px' ) . ';
+            font-weight: ' . WC_Admin_Settings::get_option( 'wup_available_from_font_weight', 'bold' ) .  '; 
+            display: ' . WC_Admin_Settings::get_option( 'wup_available_from_display', 'block' ) . ';';
+
+            echo '<div class="available">';
+            echo '<span class="available-from" style="' . esc_attr( $available_text_style ) . '">';
             $availabel_date_lebel = WC_Admin_Settings::get_option( 'wup_availabel_date_lebel', 'Available from' );
             $not_availabel_date_text = WC_Admin_Settings::get_option( 'wup_not_availabel_date_text', 'Date not set yet' );
-            $date_format = WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' );
-            ?>
-            <div class="available">
-                <span class="available-from">
-                    <strong><?php echo ! empty( $availabel_date_lebel ) ? esc_html( $availabel_date_lebel ) . ': ' : ''; ?></strong>
-                    <?php
-                    if ( 'date' === $date_format ) {
-                        echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );
-                    } else if ( 'duration' === $date_format ) {
-                        echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
-                    }
-                    ?>
-                </span>
-            </div>
-            <?php
+            if ( !empty( $availabel_date_lebel ) ) {
+                echo $availabel_date_lebel . ': ';
+            }
+            if ( empty( $_available_on ) ) {
+                echo $not_availabel_date_text;
+            }else {
+                if ( 'date' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
+                    echo date_i18n( get_option( 'date_format' ), strtotime( $_available_on ) );
+                } else if ( 'duration' == WC_Admin_Settings::get_option( 'wup_available_date_format', 'date' ) ) {
+                    echo $this->wup_get_date_diff( current_time('timestamp'), $_available_on );
+                }
+            }
+            echo '</span>';
+            echo '</div>';
         }
     }
 }
+
+
 
 /**
  * Add admin setting on woocommerce settings page
@@ -896,7 +902,77 @@ function wup_wc_product_settings_option( $settings, $current_section ) {
                     'default'=> 'Sort by upcoming',
                     'type'   => 'text'
                 ),
-
+                array(
+                    'title'  => __( 'Modify style of Available text', 'wup' ),
+                    'type'   => 'title',
+                    'id'     => 'wup_modify_availabel_text_style',
+                ),
+                array(
+                    'title' => __('Text Color', 'wup'),
+                    'desc' => __('Set the color of the available from text', 'wup'),
+                    'id' => 'wup_available_text_color',
+                    'default' => '',
+                    'type' => 'color',
+                ),
+                array(
+                    'title' => __('Text Transform', 'wup'),
+                    'desc' => __('Choose the text transform for the available from text', 'wup'),
+                    'id' => 'wup_available_text_transform',
+                    'default' => 'none',
+                    'type' => 'select',
+                    'options' => array(
+                        'none' => __('None', 'wup'),
+                        'uppercase' => __('Uppercase', 'wup'),
+                        'lowercase' => __('Lowercase', 'wup'),
+                        'capitalize' => __('Capitalize', 'wup'),
+                    ),
+                ),
+                array(
+                    'title'    => __( 'Text Align', 'wup' ),
+                    'id'       => 'wup_available_from_text_align',
+                    'default'  => 'left',
+                    'type'     => 'select',
+                    'options'  => array(
+                        'left'    => __( 'Left', 'wup' ),
+                        'center'  => __( 'Center', 'wup' ),
+                        'right'   => __( 'Right', 'wup' ),
+                        'justify' => __( 'Justify', 'wup' )
+                    ),
+                    'desc'     => __( 'Choose the text alignment for the text.' )
+                ),
+                array(
+                    'title'    => __( 'Font Size', 'wup' ),
+                    'id'       => 'wup_available_from_font_size',
+                    'default'  => '',
+                    'type'     => 'select',
+                    'options'  => array(
+                        '9px' => '9px',
+                        '10px' => '10px',
+                        '12px' => '12px',
+                        '14px' => '14px',
+                        '16px' => '16px',
+                    ),
+                    'desc'     => __( 'Select font size for the text.' )
+                ),
+                array(
+                    'title'    => __( 'Font Weight', 'wup' ),
+                    'id'       => 'wup_available_from_font_weight',
+                    'default'  => '',
+                    'type'     => 'text',
+                    'desc'     => __( 'Add font weight to the text.' )
+                ),
+                array(
+                    'title'    => __( 'Display', 'wup' ),
+                    'id'       => 'wup_available_from_display',
+                    'default'  => 'block',
+                    'type'     => 'select',
+                    'options'  => array(
+                        'block'  => __( 'Block', 'wup' ),
+                        'inline' => __( 'Inline', 'wup' ),
+                        'inline-block' => __( 'Inline Block', 'wup' )
+                    ),
+                    'desc'     => __( 'Choose the display style for the text.' )
+                ),
                 array(
                     'type'=> 'sectionend',
                     'id'  => 'wup_options'
