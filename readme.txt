@@ -4,7 +4,7 @@ Tags: WooCommerce upcoming product, upcoming product, e-commerce, coming soon pr
 Donate link: https://www.paypal.me/skshaikat
 Requires at least: 3.1
 Tested up to Woocommerce: 7.5.1
-Stable tag: 1.5.9.3
+Version: 1.5.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,12 @@ and Enjoy... :)
 4. Upcoming product search option on shop page
 
 == Change log ==
+
+=  1.5.9.4 = March 1, 2023
+* [tweak] Admin page: Adds the ability to define the text style displayed on the page.
+
+=  1.5.9.3 = March 1, 2023
+* Add test to fix vulnerability to Cross-Site Request Forgery (CSRF).
 
 = 1.5.9.2 = Sep 10, 2019
 * [tweak] Fix admin notice
